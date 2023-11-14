@@ -24,7 +24,7 @@ export class Service {
     author,
   }) {
     try {
-      return await this.database.createDocument(
+      return await this.databases.createDocument(
         conf.appWriteDatabaseId,
         conf.appWriteCollectionId,
         slug,
@@ -80,7 +80,7 @@ export class Service {
   }
   async getPost(slug) {
     try {
-      return await this.database.getDocument(
+      return await this.databases.getDocument(
         conf.appWriteDatabaseId,
         conf.appWriteCollectionId,
         slug
@@ -92,7 +92,7 @@ export class Service {
   }
   async getPosts(queries = [Query.equal("status", "active")]) {
     try {
-      return await this.database.listDocuments(
+      return await this.databases.listDocuments(
         conf.appWriteDatabaseId,
         conf.appWriteCollectionId,
         queries
@@ -118,6 +118,7 @@ export class Service {
   async deleteFile(fileId) {
     try {
       await this.storage.deleteFile(conf.appWriteBucketId, fileId);
+      return true;
     } catch (error) {
       console.log("DELETE FILE ERROR :::", error);
       return false;
