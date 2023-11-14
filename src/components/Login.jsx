@@ -76,7 +76,7 @@ function Login() {
         <form onSubmit={handleSubmit(login)} className="mt-8">
           <div className="space-y-5">
             <Input
-              label="Email:"
+              label="Email: test@gmail.com"
               placeholder="Enter your email"
               type="email"
               {...register("email", {
@@ -90,7 +90,7 @@ function Login() {
             />
 
             <Input
-              label="Password: "
+              label="Password: 12345678"
               type="password"
               placeholder="Enter your password"
               {...register("password", {
