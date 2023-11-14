@@ -14,22 +14,32 @@ export class Service {
     this.storage = new Storage(this.client);
   }
 
-  async createPost({ title, slug, content, featuredImage, status, userId }) {
+  async createPost({
+    slug,
+    title,
+    content,
+    featuredImg,
+    userId,
+    status,
+    author,
+  }) {
     try {
-      return await this.databases.createDocument(
+      return await this.database.createDocument(
         conf.appWriteDatabaseId,
         conf.appWriteCollectionId,
         slug,
         {
           title,
           content,
-          featuredImage,
-          status,
+          featuredImg,
           userId,
+          status,
+          author,
         }
       );
     } catch (error) {
-      console.log("ERROR FROM APPRITE CREATE POST ::::::::", error.message);
+      throw "Medium " + error.message;
+      return false;
     }
   }
 
@@ -88,7 +98,7 @@ export class Service {
         queries
       );
     } catch (error) {
-      console.log("ERROR GeTPOST :::", error);
+      throw "Medium " + error.message;
       return false;
     }
   }

@@ -16,10 +16,10 @@ function Home() {
   useEffect(() => {
     appwriteService
       .getPosts()
-      .then((post) => {
-        if (post) {
-          setPosts(post.documents);
-          dispatch(setstoreData(post.documents));
+      .then((posts) => {
+        if (posts) {
+          setPosts(posts.documents);
+          dispatch(setstoreData(posts.documents));
           setLoading(false);
         }
       })
