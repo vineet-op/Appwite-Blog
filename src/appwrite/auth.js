@@ -21,7 +21,6 @@ export class AuthService {
         password,
         name
       );
-
       if (userAccount) {
         // call another method
         return this.login({ email, password });
@@ -29,7 +28,7 @@ export class AuthService {
         return userAccount;
       }
     } catch (error) {
-      throw "Error in create Account" + error.message;
+      throw error;
     }
   }
 
@@ -37,7 +36,7 @@ export class AuthService {
     try {
       return await this.account.createEmailSession(email, password);
     } catch (error) {
-      throw "Error in Login :" + error.message;
+      throw "error in Login" + error.message;
     }
   }
 
@@ -45,7 +44,7 @@ export class AuthService {
     try {
       return await this.account.get();
     } catch (error) {
-      throw "Error in getCurrentUser :" + error.message;
+      throw "Error in getCurrentUser" + error.message;
     }
     return null;
   }
@@ -54,7 +53,7 @@ export class AuthService {
     try {
       await this.account.deleteSessions();
     } catch (error) {
-      throw "Medium :" + error.message;
+      throw "Error in Logout" + error.message;
     }
   }
 }

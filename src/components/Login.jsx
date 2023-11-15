@@ -7,6 +7,7 @@ import { Button, Input, Logo } from "./index";
 import authservice from "../appwrite/auth";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+
 function Login() {
   const [loading, setLoading] = useState();
   const navigate = useNavigate();
@@ -31,21 +32,6 @@ function Login() {
     }
   };
 
-  const loginWithGoogle = async () => {
-    setError("");
-    try {
-      const googleLogin = await authservice.createOAuthAccount();
-      if (googleLogin) {
-        const data = await authservice.getCurrentUser();
-        if (data) {
-          dispatch(authLogin(googleLogin));
-          navigate("/");
-        }
-      }
-    } catch (error) {
-      throw error;
-    }
-  };
   return (
     <div className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24 ">
       <div
