@@ -30,6 +30,7 @@ function PostForm({ post }) {
         ...data,
         featuredImage: file ? file.$id : undefined,
       });
+
       if (dbPost) {
         navigate(`/post/${dbPost.$id}`);
       }
@@ -39,6 +40,7 @@ function PostForm({ post }) {
         // console.log(userData.$id);
         const fileId = file.$id;
         data.featuredImage = fileId;
+
         const dbPost = await appwriteService.createPost({
           ...data,
           userId: userData.$id,

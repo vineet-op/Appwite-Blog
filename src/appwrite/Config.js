@@ -38,7 +38,7 @@ export class Service {
         }
       );
     } catch (error) {
-      throw "Medium " + error.message;
+      throw "Medium  " + error.message;
       return false;
     }
   }
@@ -80,7 +80,7 @@ export class Service {
   }
   async getPost(slug) {
     try {
-      return await this.database.getDocument(
+      return await this.databases.getDocument(
         conf.appWriteDatabaseId,
         conf.appWriteCollectionId,
         slug
