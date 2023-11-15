@@ -1,3 +1,5 @@
+// This File is used to operate Database functionality
+
 import { Client, Databases, ID, Storage, Query } from "appwrite";
 import conf from "../Config/conf";
 
@@ -14,15 +16,7 @@ export class Service {
     this.storage = new Storage(this.client);
   }
 
-  async createPost({
-    slug,
-    title,
-    content,
-    featuredImg,
-    userId,
-    status,
-    author,
-  }) {
+  async createPost({ title, slug, content, featuredImg, userId, status }) {
     try {
       return await this.database.createDocument(
         conf.appWriteDatabaseId,
@@ -34,11 +28,10 @@ export class Service {
           featuredImg,
           userId,
           status,
-          author,
         }
       );
     } catch (error) {
-      throw "Medium  " + error.message;
+      throw "Error in CreatePost " + error.message;
       return false;
     }
   }
@@ -64,7 +57,7 @@ export class Service {
 
   async deletePost(slug) {
     try {
-      return await this.databases.deleteDocument(
+      await this.databases.deleteDocument(
         conf.appWriteDatabaseId,
         conf.appWriteCollectionId,
         slug
@@ -73,11 +66,11 @@ export class Service {
       return true;
     } catch (error) {
       console.log("ERRROR FROM DELETE POST :::::::::::", error);
-      throw error;
+      throw error.message;
+      return false;
     }
-
-    return false;
   }
+
   async getPost(slug) {
     try {
       return await this.databases.getDocument(
@@ -90,15 +83,16 @@ export class Service {
       return false;
     }
   }
+
   async getPosts(queries = [Query.equal("status", "active")]) {
     try {
-      return await this.database.listDocuments(
+      return await this.databases.listDocuments(
         conf.appWriteDatabaseId,
         conf.appWriteCollectionId,
         queries
       );
     } catch (error) {
-      throw "Medium " + error.message;
+      throw "Error in GetPosts" + error.message;
       return false;
     }
   }
@@ -112,14 +106,15 @@ export class Service {
         file
       );
     } catch (error) {
-      throw error;
+      throw "Error in uploadFile" + error.message;
     }
   }
   async deleteFile(fileId) {
     try {
       await this.storage.deleteFile(conf.appWriteBucketId, fileId);
+      return true;
     } catch (error) {
-      console.log("DELETE FILE ERROR :::", error);
+      throw "DELETE FILE ERROR :::" + error.message;
       return false;
     }
   }

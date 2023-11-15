@@ -1,5 +1,5 @@
 import { Client, Account, ID } from "appwrite";
-import config from "../Config/conf";
+import conf from "../Config/conf";
 
 export class AuthService {
   client = new Client();
@@ -7,8 +7,8 @@ export class AuthService {
 
   constructor() {
     this.client
-      .setEndpoint(config.appWriteUrl)
-      .setProject(config.appWriteProjectId);
+      .setEndpoint(conf.appWriteUrl)
+      .setProject(conf.appWriteProjectId);
 
     this.account = new Account(this.client);
   }
@@ -24,12 +24,12 @@ export class AuthService {
 
       if (userAccount) {
         // call another method
-        this.login({ email, password });
+        return this.login({ email, password });
       } else {
         return userAccount;
       }
     } catch (error) {
-      throw "Medium :" + error.message;
+      throw "Error in create Account" + error.message;
     }
   }
 
@@ -37,7 +37,7 @@ export class AuthService {
     try {
       return await this.account.createEmailSession(email, password);
     } catch (error) {
-      throw "Medium :" + error.message;
+      throw "Error in Login :" + error.message;
     }
   }
 
@@ -45,7 +45,7 @@ export class AuthService {
     try {
       return await this.account.get();
     } catch (error) {
-      throw "Medium :" + error.message;
+      throw "Error in getCurrentUser :" + error.message;
     }
     return null;
   }
