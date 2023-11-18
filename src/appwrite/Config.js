@@ -1,24 +1,25 @@
-// This File is used to operate Database functionality
+/* The above class is a JavaScript service class that interacts with the Appwrite backend to perform CRUD operations on
+posts and handle file uploads. */
 
 import { Client, Databases, ID, Storage, Query } from "appwrite";
 import conf from "../Config/conf";
 
 export class Service {
   client = new Client();
-  databases;
+  database;
   storage;
 
   constructor() {
     this.client
       .setEndpoint(conf.appWriteUrl)
       .setProject(conf.appWriteProjectId);
-    this.databases = new Databases(this.client);
+    this.database = new Databases(this.client);
     this.storage = new Storage(this.client);
   }
 
   async createPost({ title, slug, content, featuredImg, userId, status }) {
     try {
-      return await this.databases.createDocument(
+      return await this.database.createDocument(
         conf.appWriteDatabaseId,
         conf.appWriteCollectionId,
         slug,
@@ -26,78 +27,77 @@ export class Service {
           title,
           content,
           featuredImg,
-          userId,
           status,
+          userId,
         }
       );
     } catch (error) {
-      throw "Error in CreatePost " + error.message;
+      throw "createPost  " + error.message;
       return false;
     }
   }
 
-  async updatePost(slug, { title, content, featuredImage, status }) {
+  async updatePost(slug, { title, content, featuredImg, status }) {
     try {
-      return await this.databases.updateDocument(
+      return await this.database.updateDocument(
         conf.appWriteDatabaseId,
         conf.appWriteCollectionId,
         slug,
         {
           title,
           content,
-          featuredImage,
+          featuredImg,
           status,
         }
       );
     } catch (error) {
-      console.log("ERROR FROM APPRITE UPDATE POST ::::::::", error);
+      throw "UpdatePost " + error.message;
       return false;
     }
   }
 
   async deletePost(slug) {
     try {
-      await this.databases.deleteDocument(
+      await this.database.deleteDocument(
         conf.appWriteDatabaseId,
         conf.appWriteCollectionId,
         slug
       );
-
       return true;
     } catch (error) {
-      console.log("ERRROR FROM DELETE POST :::::::::::", error);
-      throw error.message;
+      throw "DeletePost" + error.message;
       return false;
     }
   }
 
   async getPost(slug) {
     try {
-      return await this.databases.getDocument(
+      return await this.database.getDocument(
         conf.appWriteDatabaseId,
         conf.appWriteCollectionId,
         slug
       );
     } catch (error) {
-      console.log("ERROR FROM THE GETPOST ::::", error);
+      throw "getPost" + error.message;
       return false;
     }
   }
 
   async getPosts(queries = [Query.equal("status", "active")]) {
     try {
-      return await this.databases.listDocuments(
+      return await this.database.listDocuments(
         conf.appWriteDatabaseId,
         conf.appWriteCollectionId,
         queries
       );
     } catch (error) {
-      throw "Error in GetPosts" + error.message;
+      throw "getPosts" + error.message;
       return false;
     }
   }
 
-  //   file upload servicce
+  /** file upload service */
+
   async uploadFile(file) {
     try {
       return await this.storage.createFile(
@@ -106,15 +106,17 @@ export class Service {
         file
       );
     } catch (error) {
-      throw "Error in uploadFile" + error.message;
+      throw "uploadFile " + error.message;
+      return false;
     }
   }
+
   async deleteFile(fileId) {
     try {
       await this.storage.deleteFile(conf.appWriteBucketId, fileId);
       return true;
     } catch (error) {
-      throw "DELETE FILE ERROR :::" + error.message;
+      throw "delete File" + error.message;
       return false;
     }
   }
@@ -123,6 +125,7 @@ export class Service {
     return this.storage.getFilePreview(conf.appWriteBucketId, fileId);
   }
 }
+
 const appwriteService = new Service();
 
 export default appwriteService;

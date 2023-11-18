@@ -1,12 +1,12 @@
 import React, { useCallback } from "react";
 import { useForm } from "react-hook-form";
+import { Button, Input, RTE, Select } from "..";
 import appwriteService from "../../appwrite/Config";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Button, Input, Select, RTE } from "../index";
 
-function PostForm({ post }) {
-  const { register, watch, setValue, handleSubmit, control, getValues } =
+export default function PostForm({ post }) {
+  const { register, handleSubmit, watch, setValue, control, getValues } =
     useForm({
       defaultValues: {
         title: post?.title || "",
@@ -15,6 +15,7 @@ function PostForm({ post }) {
         status: post?.status || "active",
       },
     });
+
   const navigate = useNavigate();
   const userData = useSelector((state) => state.auth.userData);
 
@@ -38,15 +39,15 @@ function PostForm({ post }) {
       }
     } else {
       const file = await appwriteService.uploadFile(data.image[0]);
+
       if (file) {
-        // console.log(userData.$id);
         const fileId = file.$id;
         data.featuredImage = fileId;
-
         const dbPost = await appwriteService.createPost({
           ...data,
           userId: userData.$id,
         });
+
         if (dbPost) {
           navigate(`/post/${dbPost.$id}`);
         }
@@ -97,18 +98,17 @@ function PostForm({ post }) {
         />
         <RTE
           label="Content :"
-          name="Content"
+          name="content"
           control={control}
           defaultValue={getValues("content")}
         />
       </div>
       <div className="w-1/3 px-2">
         <Input
-          label="Image"
-          placeholder="Image"
+          label="Featured Image :"
+          type="file"
           className="mb-4"
           accept="image/png, image/jpg, image/jpeg, image/gif"
-          type="file"
           {...register("image", { required: !post })}
         />
         {post && (
@@ -129,7 +129,7 @@ function PostForm({ post }) {
         <Button
           type="submit"
           bgColor={post ? "bg-green-500" : undefined}
-          className="w-full border"
+          className="w-full"
         >
           {post ? "Update" : "Submit"}
         </Button>
@@ -137,5 +137,3 @@ function PostForm({ post }) {
     </form>
   );
 }
-
-export default PostForm;
