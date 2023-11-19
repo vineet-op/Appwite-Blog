@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import appwriteService from "../appwrite/Config";
-import { Container, PostCard } from "../Components/index";
+import { Container, PostCard } from "../components/index";
 import { useDispatch } from "react-redux";
 import { setstoreData } from "../Feature/DataSlice";
 import { useSelector } from "react-redux";
