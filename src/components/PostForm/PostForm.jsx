@@ -9,10 +9,10 @@ export default function PostForm({ post }) {
   const { register, handleSubmit, watch, setValue, control, getValues } =
     useForm({
       defaultValues: {
-        title: post?.title || "",
-        slug: post?.$id || "",
-        content: post?.content || "",
-        status: post?.status || "active",
+        Title: post?.Title || "",
+        Slug: post?.$id || "",
+        Content: post?.Content || "",
+        Status: post?.Status || "active",
       },
     });
 
@@ -26,12 +26,12 @@ export default function PostForm({ post }) {
         : null;
 
       if (file) {
-        appwriteService.deleteFile(post.featuredImage);
+        appwriteService.deleteFile(post.FeaturedImage);
       }
 
       const dbPost = await appwriteService.updatePost(post.$id, {
         ...data,
-        featuredImage: file ? file.$id : undefined,
+        FeaturedImage: file ? file.$id : undefined,
       });
 
       if (dbPost) {
@@ -42,7 +42,7 @@ export default function PostForm({ post }) {
 
       if (file) {
         const fileId = file.$id;
-        data.featuredImage = fileId;
+        data.FeaturedImage = fileId;
         const dbPost = await appwriteService.createPost({
           ...data,
           userId: userData.$id,
@@ -55,7 +55,7 @@ export default function PostForm({ post }) {
     }
   };
 
-  const slugTransform = useCallback((value) => {
+  const SlugTransform = useCallback((value) => {
     if (value && typeof value === "string")
       return value
         .trim()
@@ -68,13 +68,13 @@ export default function PostForm({ post }) {
 
   React.useEffect(() => {
     const subscription = watch((value, { name }) => {
-      if (name === "title") {
-        setValue("slug", slugTransform(value.title), { shouldValidate: true });
+      if (name === "Title") {
+        setValue("Slug", SlugTransform(value.Title), { shouldValidate: true });
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [watch, slugTransform, setValue]);
+  }, [watch, SlugTransform, setValue]);
 
   return (
     <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
@@ -83,24 +83,24 @@ export default function PostForm({ post }) {
           label="Title :"
           placeholder="Title"
           className="mb-4"
-          {...register("title", { required: true })}
+          {...register("Title", { required: true })}
         />
         <Input
           label="Slug :"
           placeholder="Slug"
           className="mb-4"
-          {...register("slug", { required: true })}
+          {...register("Slug", { required: true })}
           onInput={(e) => {
-            setValue("slug", slugTransform(e.currentTarget.value), {
+            setValue("Slug", SlugTransform(e.currentTarget.value), {
               shouldValidate: true,
             });
           }}
         />
         <RTE
           label="Content :"
-          name="content"
+          name="Content"
           control={control}
-          defaultValue={getValues("content")}
+          defaultValue={getValues("Content")}
         />
       </div>
       <div className="w-1/3 px-2">
@@ -114,8 +114,8 @@ export default function PostForm({ post }) {
         {post && (
           <div className="w-full mb-4">
             <img
-              src={appwriteService.getFilePreview(post.featuredImage)}
-              alt={post.title}
+              src={appwriteService.getFilePreview(post.FeaturedImage)}
+              alt={post.Title}
               className="rounded-lg"
             />
           </div>
@@ -124,7 +124,7 @@ export default function PostForm({ post }) {
           options={["active", "inactive"]}
           label="Status"
           className="mb-4"
-          {...register("status", { required: true })}
+          {...register("Status", { required: true })}
         />
         <Button
           type="submit"

@@ -17,18 +17,18 @@ export class Service {
     this.storage = new Storage(this.client);
   }
 
-  async createPost({ title, slug, content, featuredImg, userId, status }) {
+  async createPost({ Title, Slug, Content, FeaturedImage, UserId, Status }) {
     try {
       return await this.database.createDocument(
         conf.appWriteDatabaseId,
         conf.appWriteCollectionId,
-        slug,
+        Slug,
         {
-          title,
-          content,
-          featuredImg,
-          status,
-          userId,
+          Title,
+          Content,
+          FeaturedImage,
+          Status,
+          UserId,
         }
       );
     } catch (error) {
@@ -37,17 +37,17 @@ export class Service {
     }
   }
 
-  async updatePost(slug, { title, content, featuredImg, status }) {
+  async updatePost(Slug, { Title, Content, FeaturedImage, Status }) {
     try {
       return await this.database.updateDocument(
         conf.appWriteDatabaseId,
         conf.appWriteCollectionId,
-        slug,
+        Slug,
         {
-          title,
-          content,
-          featuredImg,
-          status,
+          Title,
+          Content,
+          FeaturedImage,
+          Status,
         }
       );
     } catch (error) {
@@ -56,12 +56,12 @@ export class Service {
     }
   }
 
-  async deletePost(slug) {
+  async deletePost(Slug) {
     try {
       await this.database.deleteDocument(
         conf.appWriteDatabaseId,
         conf.appWriteCollectionId,
-        slug
+        Slug
       );
       return true;
     } catch (error) {
@@ -70,12 +70,12 @@ export class Service {
     }
   }
 
-  async getPost(slug) {
+  async getPost(Slug) {
     try {
       return await this.database.getDocument(
         conf.appWriteDatabaseId,
         conf.appWriteCollectionId,
-        slug
+        Slug
       );
     } catch (error) {
       throw "getPost" + error.message;
@@ -83,7 +83,7 @@ export class Service {
     }
   }
 
-  async getPosts(queries = [Query.equal("status", "active")]) {
+  async getPosts(queries = [Query.equal("Status", "active")]) {
     try {
       return await this.database.listDocuments(
         conf.appWriteDatabaseId,
