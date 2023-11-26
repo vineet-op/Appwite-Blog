@@ -38,7 +38,7 @@ function Header() {
   return (
     <header className="relative w-full  p-4 ">
       <Container>
-        <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 sm:px-6 lg:px-8">
+        <nav className="mx-auto w-full flex max-w-7xl items-center justify-between px-4 py-2 sm:px-6 lg:px-8 bg-slate-900 text-yellow-300">
           <div className="inline-flex items-center space-x-2">
             <Link to="/">
               <Logo width="70px" className="text-white" />
@@ -51,11 +51,11 @@ function Header() {
                 item.active ? (
                   <li
                     key={item.name}
-                    className="-m-3 flex items-center rounded-md p-3 text-sm font-semibold hover:bg-gray-50"
+                    className="-m-3 flex items-center rounded-md p-3 text-sm font-semibold hover:bg-slate-700"
                   >
                     <button
                       onClick={() => navigate(item.slug)}
-                      className="inline-block px-6 py-2 duration-200 hover:bg-blue-100 rounded-lg hover:shadow-xl "
+                      className="inline-block px-6 py-2 duration-200 hover:bg-slate-00 rounded-lg hover:shadow-xl "
                     >
                       {item.name}
                     </button>
