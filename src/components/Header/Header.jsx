@@ -36,7 +36,7 @@ function Header() {
   ];
 
   return (
-    <header className="relative w-full  p-4 ">
+    <header className="relative w-full">
       <Container>
         <nav className="mx-auto w-full flex max-w-7xl items-center justify-between px-4 py-2 sm:px-6 lg:px-8 bg-slate-900 text-yellow-300">
           <div className="inline-flex items-center space-x-2">
@@ -45,7 +45,7 @@ function Header() {
             </Link>
           </div>
 
-          <div className="hidden lg:block">
+          <div className="lg:block">
             <ul className="inline-flex space-x-8">
               {navItems.map((item) =>
                 item.active ? (
