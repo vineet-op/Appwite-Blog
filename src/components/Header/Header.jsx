@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Logo, LogoutBtn } from "../index";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
 function Header() {
   const authStatus = useSelector((state) => state.auth.status);
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false); // State to manage mobile menu
 
   const navItems = [
     {
@@ -36,33 +38,30 @@ function Header() {
   ];
 
   return (
-    <header className="relative w-full">
+    <header className="bg-slate-900">
       <Container>
-        <nav className="mx-auto w-full flex max-w-7xl items-center justify-between px-4 py-2 sm:px-6 lg:px-8 bg-slate-900 text-yellow-300">
-          <div className="inline-flex items-center space-x-2">
+        <nav className="flex items-center justify-between gap-4 py-4">
+          <div className="flex items-center">
             <Link to="/">
               <Logo width="70px" className="text-white" />
             </Link>
           </div>
 
-          <div className="lg:block">
-            <ul className="inline-flex space-x-8">
-              {navItems.map((item) =>
-                item.active ? (
-                  <li
-                    key={item.name}
-                    className="-m-3 flex items-center rounded-md p-3 text-sm font-semibold hover:bg-slate-700"
-                  >
-                    <button
-                      onClick={() => navigate(item.slug)}
-                      className="inline-block px-6 py-2 duration-200 hover:bg-slate-00 rounded-lg hover:shadow-xl "
-                    >
-                      {item.name}
-                    </button>
-                  </li>
-                ) : null
+          <div className="hidden md:flex flex-grow justify-center">
+            <ul className="flex space-x-20 gap-6 justify-center items-center">
+              {navItems.map(
+                (item) =>
+                  item.active && (
+                    <li key={item.name} className="py-2">
+                      <button
+                        onClick={() => navigate(item.slug)}
+                        className="text-white hover:text-yellow-300 transition duration-200"
+                      >
+                        {item.name}
+                      </button>
+                    </li>
+                  )
               )}
-
               {authStatus && (
                 <li>
                   <LogoutBtn />
@@ -70,12 +69,56 @@ function Header() {
               )}
             </ul>
           </div>
-          <input
-            type="checkbox"
-            value=""
-            className="sr-only peer bg-tahiti-light"
-          />
+
+          {/* Mobile Menu - Aligned to End */}
+          <div className="flex items-center md:hidden ml-auto">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="focus:outline-none"
+            >
+              <svg
+                className="w-6 h-6 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16m-7 6h7"}
+                />
+              </svg>
+            </button>
+          </div>
         </nav>
+
+        {/* Mobile Menu Items */}
+        <div className={`md:hidden ${isOpen ? "block" : "hidden"}`}>
+          <ul className="flex flex-col items-center">
+            {navItems.map(
+              (item) =>
+                item.active && (
+                  <li key={item.name} className="py-2">
+                    <button
+                      onClick={() => {
+                        setIsOpen(false);
+                        navigate(item.slug);
+                      }}
+                      className="text-white hover:text-yellow-300 transition duration-200"
+                    >
+                      {item.name}
+                    </button>
+                  </li>
+                )
+            )}
+            {authStatus && (
+              <li>
+                <LogoutBtn />
+              </li>
+            )}
+          </ul>
+        </div>
       </Container>
     </header>
   );
